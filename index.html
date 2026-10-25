@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ur"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Barber Shop</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#000000">
+<link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Helvetica,Arial,sans-serif}
+#splash{position:fixed;inset:0;background:#000;z-index:9;display:flex;align-items:center;justify-content:center;transition:opacity .6s}
+#splash.out{opacity:0;pointer-events:none}
+#splash svg{width:min(80vw,340px);height:auto}
+.hair{transform-origin:150px 122px;transform:scaleY(0);animation:grow 1.8s .3s ease-out forwards}
+@keyframes grow{to{transform:scaleY(1)}}
+.head{animation:pop .6s ease-out both;transform-origin:150px 200px}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.top{animation:fall .9s 3.3s ease-in forwards}
+@keyframes fall{to{transform:translate(-30px,160px) rotate(-60deg);opacity:0}}
+.sc{transform:translateX(260px);animation:come .8s 2.1s ease-out forwards}
+@keyframes come{to{transform:translateX(0)}}
+.b1{transform-origin:240px 120px;animation:c1 .35s 2.9s ease-in-out 4 alternate}
+.b2{transform-origin:240px 120px;animation:c2 .35s 2.9s ease-in-out 4 alternate}
+@keyframes c1{to{transform:rotate(16deg)}}@keyframes c2{to{transform:rotate(-16deg)}}
+.scout{animation:go .7s 4.4s ease-in forwards}
+@keyframes go{to{transform:translateX(300px)}}
+#app{position:relative;max-width:480px;margin:0 auto;padding:24px 18px 40px;min-height:100%}
+h1{letter-spacing:6px;font-weight:300;text-align:center;margin:30px 0 6px}
+.sub{text-align:center;color:#888;margin-bottom:36px;font-size:14px}
+.opt{display:block;width:100%;border:1px solid #fff;background:#000;color:#fff;padding:26px 20px;margin-bottom:16px;font-size:20px;letter-spacing:2px;text-align:left;cursor:pointer;border-radius:4px}
+.opt:hover,.opt:active{background:#fff;color:#000}
+.opt small{display:block;font-size:12px;letter-spacing:0;color:inherit;opacity:.6;margin-top:6px}
+label{display:block;margin:16px 0 6px;font-size:13px;color:#aaa;letter-spacing:1px}
+input,select{width:100%;padding:14px;background:#000;color:#fff;border:1px solid #fff;border-radius:4px;font-size:16px;color-scheme:dark}
+.btn{margin-top:26px;width:100%;padding:16px;background:#fff;color:#000;border:0;font-size:16px;letter-spacing:2px;cursor:pointer;border-radius:4px}
+.back{background:none;border:0;color:#aaa;font-size:14px;cursor:pointer;padding:6px 0}
+.card{border:1px solid #444;padding:14px;margin-bottom:12px;border-radius:4px}
+.card b{font-size:17px}.card div{color:#bbb;font-size:14px;margin-top:4px}
+.ok{text-align:center;padding:60px 10px}
+.hide{display:none}
+.av{width:64px;height:64px;border-radius:50%;border:1px solid #fff;object-fit:cover;background:#111;display:block;flex:none}
+.row{display:flex;gap:14px;align-items:center}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.tab{white-space:nowrap;border:1px solid #fff;background:#000;color:#fff;padding:8px 14px;border-radius:20px;font-size:13px;cursor:pointer}
+.tab.on{background:#fff;color:#000}
+.star{cursor:pointer;font-size:24px;color:#444;margin-right:4px}.star.on{color:#fff}
+.mini{background:#000;color:#fff;border:1px solid #666;border-radius:4px;padding:6px 10px;font-size:12px;cursor:pointer}
+.mi{padding:12px 6px;cursor:pointer;font-size:15px}.mi:hover{background:#fff;color:#000}
+</style></head><body>
+<div id="login" class="hide" style="position:fixed;inset:0;z-index:8;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:20px"><h1 style="margin:0">BARBER</h1><div class="sub" style="margin:0">Appointment ke liye login karein</div><button class="btn" style="max-width:300px" onclick="auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())">GOOGLE SE LOGIN</button></div>
+<div id="splash"><svg viewBox="0 0 300 340">
+<defs><clipPath id="lo"><rect x="0" y="95" width="300" height="300"/></clipPath><clipPath id="hi"><rect x="0" y="0" width="300" height="95"/></clipPath>
+<g id="h" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"><path d="M150 124 C144 104 158 92 150 62"/><path d="M134 128 C127 110 138 98 128 80"/><path d="M166 128 C173 110 162 98 174 80"/></g></defs>
+<g class="head"><circle cx="150" cy="200" r="80" fill="#fff"/><circle cx="122" cy="195" r="7"/><circle cx="178" cy="195" r="7"/><path d="M125 225 Q150 250 175 225" stroke="#000" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+<g class="hair"><g clip-path="url(#lo)"><use href="#h"/></g><g class="top" clip-path="url(#hi)"><use href="#h"/></g></g>
+<g class="scout"><g class="sc"><g transform="translate(99,47) scale(.4)" stroke-linejoin="round" stroke-linecap="round">
+<g class="b1"><path d="M240 118 L130 142 Q122 146 128 151 L242 128 Z" fill="#fff" stroke="#fff" stroke-width="6"/><path d="M240 120 L262 98" stroke="#fff" stroke-width="9"/><circle cx="272" cy="90" r="17" fill="none" stroke="#fff" stroke-width="9"/></g>
+<g class="b2"><path d="M240 122 L130 98 Q122 94 128 89 L242 112 Z" fill="#ccc" stroke="#ccc" stroke-width="6"/><path d="M240 120 L262 142" stroke="#ccc" stroke-width="9"/><circle cx="272" cy="150" r="17" fill="none" stroke="#ccc" stroke-width="9"/></g>
+<circle cx="240" cy="120" r="7" fill="#000" stroke="#fff" stroke-width="4"/><circle cx="198" cy="128" r="3" fill="#000"/><circle cx="212" cy="128" r="3" fill="#000"/>
+</g></g></g></svg></div>
+
+<div id="app">
+<div id="home">
+<button id="dots" class="hide" onclick="$('dm').classList.toggle('hide')" style="position:absolute;top:6px;right:10px;background:none;border:0;color:#fff;font-size:30px;cursor:pointer;line-height:1">⋮</button>
+<div id="dm" class="hide card" style="position:absolute;top:48px;right:10px;background:#000;z-index:5;min-width:170px;padding:4px 10px"><div class="mi" onclick="show('cust')">Customer List</div><div class="mi" onclick="show('owner')">Owner</div></div>
+<h1 id="shopName">BARBER</h1><div class="sub">Sharp cuts. Clean look.</div>
+<button class="opt" onclick="show('book')">APPOINTMENT<small>Tarikh aur waqt chunein</small></button>
+<button class="opt" onclick="show('svc')">SERVICES<small>Hamari services aur rates</small></button>
+<a id="wa" class="opt" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/?text=Appointment%20book%20karein%3A%20https%3A%2F%2Fclaude.ai%2Fartifact%2FUrAXmuVbBFqqwqkrTDH7iA">WHATSAPP PAR SHARE<small>Dosto aur customers ko link bhejein</small></a>
+<button id="inst" class="opt hide" onclick="ip.prompt()">APP INSTALL KAREIN<small>Home screen par app ban jayegi</small></button><div class="sub" style="margin-top:24px">Phone par install: browser menu → Add to Home screen</div>
+<button class="opt hide" id="ownerBtn" onclick="show('owner')">OWNER<small>Aap ka control panel</small></button>
+</div>
+
+<div id="book" class="hide">
+<button class="back" onclick="show('home')">← Wapas</button><h1 style="font-size:22px">APPOINTMENT</h1>
+<label>NAAM</label><input id="n" placeholder="Aap ka naam">
+<label>PHONE</label><input id="p" type="tel" placeholder="03xx xxxxxxx">
+<label>TARIKH</label><input id="d" type="date">
+<label>WAQT</label><input id="t" type="time">
+<label>KYA KATWANA HAI?</label>
+<select id="s"><option>Baal (Haircut)</option><option>Dadi (Beard)</option><option>Baal + Dadi</option></select>
+<button class="btn" onclick="submit()">CONFIRM KAREIN</button>
+<div id="err" style="color:#fff;margin-top:12px;font-size:14px"></div>
+</div>
+
+<div id="done" class="hide ok"><h1 style="font-size:24px">✓ BOOKED</h1><p style="color:#aaa">Aap ki appointment owner tak pahunch gayi hai.</p><button class="btn" onclick="show('home')">HOME</button></div>
+
+<div id="cust" class="hide">
+<button class="back" onclick="show('home')">← Wapas</button><h1 style="font-size:22px">CUSTOMERS</h1>
+<div id="cst" class="sub" style="margin-bottom:14px"></div>
+<input id="cq" placeholder="Search naam / number" oninput="rc()" style="margin-bottom:12px">
+<div class="tabs" id="tabs"></div>
+<div id="cl" style="margin-top:12px"></div>
+</div>
+
+<div id="svc" class="hide">
+<button class="back" onclick="show('home')">← Wapas</button><h1 style="font-size:22px">SERVICES</h1>
+<div id="svcList"></div><h1 style="font-size:16px;margin-top:28px">TEAM</h1><div id="team"></div>
+</div>
+
+<div id="owner" class="hide">
+<button class="back" onclick="show('home')">← Wapas</button><h1 style="font-size:22px">OWNER</h1>
+<div class="card"><b>OWNER</b>
+<div class="row" style="margin-top:12px"><img id="oph" class="av" alt=""><label class="mini" style="margin:0;display:inline-block;color:#fff">PHOTO<input type="file" accept="image/*" hidden onchange="up(this,-1)"></label></div>
+<label>NAAM</label><input id="on" placeholder="Owner ka naam">
+<label>NUMBER</label><input id="op" type="tel" placeholder="Owner ka number"></div>
+<h1 style="font-size:16px;margin-top:28px">BARBERS</h1>
+<div id="wk"></div>
+<button class="back" style="color:#fff;font-size:16px;margin-bottom:18px" onclick="addWk()">+ NAYA BARBER</button>
+<div class="card"><b>SHOP</b>
+<label>SHOP KA NAAM</label><input id="cn" placeholder="Barber">
+<label>SERVICES (har line: naam - rate)</label><textarea id="cs" rows="5" style="width:100%;padding:14px;background:#000;color:#fff;border:1px solid #fff;border-radius:4px;font-size:16px;font-family:inherit"></textarea></div>
+<button class="btn" onclick="saveCfg()">SAB SAVE KAREIN</button><div id="cm" style="margin:10px 0 30px;font-size:14px"></div>
+<h1 style="font-size:16px">BOOKINGS</h1>
+<div id="list"><div class="sub">Koi appointment nahi.</div></div>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+function show(x){$('dm').classList.add('hide');for(const k of['home','book','done','svc','owner','cust'])$(k).classList.toggle('hide',k!==x);if(x==='cust')rc()}
+setTimeout(()=>$('splash').classList.add('out'),5300);
+let db=null,user=null;
+const DEF=["Baal (Haircut)","Dadi (Beard)","Baal + Dadi"];
+let wk=[],own={photo:''};
+function renderWk(){const box=$('wk');box.replaceChildren();wk.forEach((w,i)=>{
+ const c=document.createElement('div');c.className='card';const t=document.createElement('b');t.textContent='BARBER '+(i+1);const r=document.createElement('div');r.className='row';r.style.marginTop='12px';const im=document.createElement('img');im.className='av';setImg(im,w.photo);const fl=document.createElement('label');fl.className='mini';fl.style.cssText='margin:0;display:inline-block;color:#fff';fl.textContent='PHOTO';const fi=document.createElement('input');fi.type='file';fi.accept='image/*';fi.hidden=true;fi.onchange=()=>up(fi,i);fl.append(fi);r.append(im,fl);
+ const n=document.createElement('input');n.placeholder='Naam';n.value=w.name||'';n.oninput=()=>{w.name=n.value};n.style.marginTop='10px';
+ const p=document.createElement('input');p.placeholder='Number';p.type='tel';p.value=w.phone||'';p.oninput=()=>{w.phone=p.value};p.style.marginTop='10px';
+ const x=document.createElement('button');x.className='back';x.textContent='Hatayein';x.onclick=()=>{wk.splice(i,1);renderWk()};
+ c.append(t,r,n,p,x);box.append(c)})}
+function addWk(){wk.push({name:'',phone:''});renderWk()}
+function applyCfg(c){
+ const name=(c&&c.name)||"BARBER",sv=(c&&c.services&&c.services.length)?c.services:DEF;
+ $('shopName').textContent=name.toUpperCase();document.title=name;own.photo=(c&&c.owner&&c.owner.photo)||'';setImg($('oph'),own.photo);renderTeam(c);
+ $('svcList').replaceChildren();$('s').replaceChildren();
+ for(const l of sv){const d=document.createElement('div');d.className='card';const b=document.createElement('b');b.textContent=l;d.append(b);$('svcList').append(d);
+  const o=document.createElement('option');o.textContent=l.split(' - ')[0];$('s').append(o)}
+ if(!$('owner').contains(document.activeElement)){
+  $('cn').value=(c&&c.name)||"";$('cs').value=sv.join("\n");
+  $('on').value=(c&&c.owner&&c.owner.name)||"";$('op').value=(c&&c.owner&&c.owner.phone)||"";
+  wk=((c&&c.workers)||[]).map(w=>({name:w.name||'',phone:w.phone||'',photo:w.photo||''}));renderWk();
+ }
+}
+applyCfg(null);
+async function saveCfg(){
+ const services=$('cs').value.split("\n").map(x=>x.trim()).filter(Boolean);
+ const cfg={name:$('cn').value.trim(),services,owner:{name:$('on').value.trim(),phone:$('op').value.trim(),photo:own.photo||''},workers:wk.filter(w=>(w.name||'').trim()||(w.phone||'').trim())};
+ try{await db.doc("config/shop").set(cfg);$('cm').textContent='Save ho gaya ✓'}
+ catch(e){$('cm').textContent='Save nahi hua.'}
+}
+window.boot=async()=>{
+ try{
+  user=await claude.use("user");db=await claude.use("db");
+  if(db)db.doc("config/shop").onSnapshot(d=>{try{applyCfg(d&&d.data?d.data():null)}catch(e){}});
+  if(db&&user&&!user.isOwner())regMe();
+  if(user&&user.isOwner()){
+   $('ownerBtn').classList.remove('hide');$('dots').classList.remove('hide');startCust();
+   if(db)db.collection("appointments").onSnapshot(snap=>{
+    const rows=[];snap.forEach(d=>rows.push(d.data()));
+    rows.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+    $('list').replaceChildren();
+    if(!rows.length){$('list').innerHTML='<div class="sub">Koi appointment nahi.</div>';return}
+    for(const r of rows){
+     const c=document.createElement('div');c.className='card';
+     const b=document.createElement('b');b.textContent=r.name+' — '+r.service;
+     const d=document.createElement('div');d.textContent=r.date+' | '+r.time+' | '+r.phone;
+     c.append(b,d);$('list').append(c)}
+   });
+  }
+ }catch(e){}
+};
+async function submit(){
+ const v={name:$('n').value.trim(),phone:$('p').value.trim(),date:$('d').value,time:$('t').value,service:$('s').value};
+ if(!v.name||!v.phone||!v.date||!v.time){$('err').textContent='Sab fields bharein.';return}
+ if(!db||!user){$('err').textContent='Booking abhi available nahi (sign in zaroori hai).';return}
+ try{await db.collection("appointments").doc(await user.id()).set(v);await upCust(v);
+  $('err').textContent='';for(const i of['n','p','d','t'])$(i).value='';show('done')}
+ catch(e){$('err').textContent='Booking save nahi hui. Dobara koshish karein.'}
+}
+
+let CU=[],CRM={},me={},ftab='all',PL=[['all','All'],['new','New'],['happy','♥ Happy'],['regular','↻ Regular'],['vip','★ VIP'],['unhappy','✕ Unhappy'],['blocked','⊘ Blocked']];
+function setImg(i,u){if(u)i.src=u;else i.removeAttribute('src');i.style.opacity=u?1:.25}
+function shrink(f){return new Promise((ok,no)=>{const r=new FileReader;r.onload=()=>{const i=new Image;i.onload=()=>{const k=Math.min(1,256/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext('2d').drawImage(i,0,0,c.width,c.height);c.toBlob(ok,'image/jpeg',.82)};i.onerror=no;i.src=r.result};r.onerror=no;r.readAsDataURL(f)})}
+async function up(inp,i){const f=inp.files[0];if(!f)return;$('cm').textContent='Photo upload ho rahi hai...';
+ try{const a=await claude.use("assets");if(!a){$('cm').textContent='Photo upload ki ijazat nahi.';return}
+  const r=await a.upload(await shrink(f));
+  if(i<0){own.photo=r.url;setImg($('oph'),r.url)}else{wk[i].photo=r.url;renderWk()}
+  $('cm').textContent='Photo lag gayi. "Sab Save Karein" dabayein.'}catch(e){$('cm').textContent='Photo upload nahi hui.'}}
+function renderTeam(c){const t=$('team');t.replaceChildren();const ppl=[];
+ if(c&&c.owner&&(c.owner.name||c.owner.photo))ppl.push({...c.owner,role:'Owner'});
+ ((c&&c.workers)||[]).forEach(w=>ppl.push({...w,role:'Barber'}));
+ for(const p of ppl){const d=document.createElement('div');d.className='card row';const im=document.createElement('img');im.className='av';setImg(im,p.photo);const x=document.createElement('div');const b=document.createElement('b');b.textContent=p.name||p.role;const s=document.createElement('div');s.textContent=p.role;x.append(b,s);d.append(im,x);t.append(d)}}
+async function regMe(){try{const id=await user.id();let d=null;try{d=await db.doc("customers/"+id).get()}catch(e){}
+ const cur=d&&d.data?d.data():null;me={...(cur||{}),id,name:(cur&&cur.name)||(window.UN||''),joined:(cur&&cur.joined)||Date.now(),last:Date.now()};await db.doc("customers/"+id).set(me)}catch(e){}}
+async function upCust(v){try{const id=await user.id();me={...me,id,name:v.name,phone:v.phone,last:Date.now(),joined:me.joined||Date.now()};await db.doc("customers/"+id).set(me)}catch(e){}}
+function startCust(){if(!db)return;
+ db.collection("customers").onSnapshot(s=>{CU=[];s.forEach(d=>{const x=d.data();if(x&&x.id)CU.push(x)});rc()});
+ db.collection("crm").onSnapshot(s=>{CRM={};s.forEach(d=>{const x=d.data();if(x&&x.id)CRM[x.id]=x});rc()})}
+function sv(id,p){CRM[id]={...(CRM[id]||{}),id,...p};db.doc("crm/"+id).set(CRM[id]).catch(()=>{});rc()}
+async function rc(){
+ const box=$('cl');if(!box||$('cust').classList.contains('hide'))return;
+ const names={};try{const ps=await user.profiles(CU.map(c=>c.id));for(const c of CU)names[c.id]=(ps[c.id]&&ps[c.id].name)||''}catch(e){}
+ const q=$('cq').value.toLowerCase(),L=c=>(CRM[c.id]&&CRM[c.id].list)||'new';
+ const rs=CU.map(c=>(CRM[c.id]||{}).rating).filter(Boolean),vs=CU.reduce((a,c)=>a+((CRM[c.id]||{}).visits||0),0);
+ $('cst').textContent=CU.length+' customers | rating '+(rs.length?(rs.reduce((a,b)=>a+b,0)/rs.length).toFixed(1):'-')+' | '+vs+' visits';
+ $('tabs').replaceChildren();
+ for(const [k,n] of PL){const b=document.createElement('button');b.className='tab'+(k===ftab?' on':'');b.textContent=n+' ('+(k==='all'?CU.length:CU.filter(c=>L(c)===k).length)+')';b.onclick=()=>{ftab=k;rc()};$('tabs').append(b)}
+ box.replaceChildren();
+ const rows=CU.filter(c=>(ftab==='all'||L(c)===ftab)&&((c.name||names[c.id]||'')+(c.phone||'')).toLowerCase().includes(q));
+ if(!rows.length){box.innerHTML='<div class="sub">Koi customer nahi.</div>';return}
+ for(const c of rows){const m=CRM[c.id]||{},card=document.createElement('div');card.className='card';
+  const b=document.createElement('b');b.textContent=c.name||names[c.id]||'Customer';
+  const i=document.createElement('div');i.textContent=(c.phone||'no number')+' | joined '+new Date(c.joined||0).toLocaleDateString();
+  const st=document.createElement('div');for(let n=1;n<=5;n++){const e=document.createElement('span');e.className='star'+(n<=(m.rating||0)?' on':'');e.textContent='★';e.onclick=()=>sv(c.id,{rating:m.rating===n?0:n});st.append(e)}
+  const sel=document.createElement('select');sel.style.marginTop='8px';for(const [k,n] of PL.slice(1)){const o=document.createElement('option');o.value=k;o.textContent=n;sel.append(o)}sel.value=L(c);sel.onchange=()=>sv(c.id,{list:sel.value});
+  const vr=document.createElement('div');vr.style.marginTop='8px';vr.textContent='Visits: '+(m.visits||0)+' ';const pl=document.createElement('button');pl.className='mini';pl.textContent='+1';pl.onclick=()=>sv(c.id,{visits:(m.visits||0)+1});vr.append(pl);
+  if(c.phone){const a=document.createElement('a');a.href='tel:'+c.phone.replace(/[^0-9+]/g,'');a.textContent='Call';a.style.cssText='color:#fff;margin-left:14px;font-size:13px';vr.append(a)}
+  const nt=document.createElement('input');nt.placeholder='Note';nt.value=m.note||'';nt.style.marginTop='8px';nt.onchange=()=>sv(c.id,{note:nt.value});
+  card.append(b,i,st,sel,vr,nt);box.append(card)}}
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+firebase.initializeApp(window.FBCONF);const auth=firebase.auth(),fs=firebase.firestore();
+const wd=r=>({get:async()=>{const d=await r.get();return{exists:d.exists,data:()=>d.data()}},set:o=>r.set(JSON.parse(JSON.stringify(o))),onSnapshot:f=>r.onSnapshot(d=>f({data:()=>d.data()}))});
+const DB={doc:p=>wd(fs.doc(p)),collection:p=>({doc:id=>wd(fs.doc(p+"/"+id)),onSnapshot:f=>fs.collection(p).onSnapshot(q=>f({forEach:g=>q.forEach(d=>g({data:()=>d.data()}))}))})};
+const ASSETS={upload:b=>new Promise(r=>{const f=new FileReader;f.onload=()=>r({url:f.result});f.readAsDataURL(b)})};
+let USER=null,booted=false;
+const claude={use:async n=>({user:USER,db:DB,assets:ASSETS})[n]};
+auth.onAuthStateChanged(u=>{
+ if(!u){USER=null;$('login').classList.remove('hide');return}
+ window.UN=u.displayName||'';
+ USER={id:async()=>u.uid,isOwner:()=>(window.OWNERS||[]).includes((u.email||'').toLowerCase()),profiles:async()=>({})};
+ $('login').classList.add('hide');if(!booted){booted=true;boot()}});
+let ip;addEventListener('beforeinstallprompt',e=>{e.preventDefault();ip=e;$('inst').classList.remove('hide')});
+$('wa').href='https://wa.me/?text='+encodeURIComponent('Appointment book karein: '+location.href.split('#')[0]);
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+</script>
+</body></html>

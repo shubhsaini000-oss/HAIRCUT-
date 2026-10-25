@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // YAHAN apni owner Gmail likhein (chhote letters mein)
+    function owner() { return request.auth != null && request.auth.token.email.lower() in ['owner@gmail.com']; }
+    match /config/{d}       { allow read: if request.auth != null; allow write: if owner(); }
+    match /appointments/{u} { allow read: if owner(); allow write: if request.auth != null && request.auth.uid == u; }
+    match /customers/{u}    { allow read: if owner(); allow write: if request.auth != null && request.auth.uid == u; }
+    match /crm/{d}          { allow read, write: if owner(); }
+  }
+}
